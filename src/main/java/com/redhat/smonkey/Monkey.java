@@ -65,19 +65,32 @@ public class Monkey {
             return generateObjectNode((ObjectNode)templateNode);
         else if(templateNode instanceof ArrayNode) 
             return generateArrayNode((ArrayNode)templateNode);
-        else
-            return templateNode.deepCopy();
+        else {
+            JsonNode node=attemptGenerateValue(templateNode);
+            if(node==null)
+                return templateNode.deepCopy();
+            else
+                return node;
+        }
     }
     
-    private JsonNode attemptGenerateValue(ObjectNode templateNode) {
+    private JsonNode attemptGenerateValue(JsonNode templateNode) {
+        String fname=null;
+
         if(templateNode.size()==1) {
-            String fname=templateNode.fieldNames().next();
+            fname=templateNode.fieldNames().next();
+        } else if(!templateNode.isContainerNode()) {
+            fname=templateNode.asText();
+        }
+        System.out.println("templateNode:"+templateNode+" fname:"+fname);
             // Check if this is an escaped name
-            if(!fname.startsWith("\\")) {
-                JsonNode value=generateValue(fname,templateNode.get(fname));
-                if(value!=null)
-                    return value;
-            }
+        if(fname!=null&&!fname.startsWith("\\")) {
+            JsonNode dataNode=templateNode.get(fname);
+            if(dataNode==null)
+                dataNode=templateNode;
+            JsonNode value=generateValue(fname,dataNode);
+            if(value!=null)
+                return value;
         }
         return null;
     }
