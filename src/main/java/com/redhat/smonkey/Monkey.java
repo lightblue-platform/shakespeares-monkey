@@ -161,7 +161,7 @@ public class Monkey {
                     ((ArrayNode)node).add(m.generate());
             } else
                 node=m.generate();
-            System.out.println(node);
+            System.out.println(Utils.prettyPrint(node));
         } else
             printHelp(registry);
     }
