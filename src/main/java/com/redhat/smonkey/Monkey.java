@@ -82,7 +82,6 @@ public class Monkey {
         } else if(!templateNode.isContainerNode()) {
             fname=templateNode.asText();
         }
-        System.out.println("templateNode:"+templateNode+" fname:"+fname);
             // Check if this is an escaped name
         if(fname!=null&&!fname.startsWith("\\")) {
             JsonNode dataNode=templateNode.get(fname);
