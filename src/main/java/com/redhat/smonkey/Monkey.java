@@ -76,7 +76,6 @@ public class Monkey {
     
     private JsonNode attemptGenerateValue(JsonNode templateNode) {
         String fname=null;
-
         if(templateNode.size()==1) {
             fname=templateNode.fieldNames().next();
         } else if(!templateNode.isContainerNode()) {
