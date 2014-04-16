@@ -1,10 +1,28 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+Copyright 2013 Red Hat, Inc. and/or its affiliates.
+
+This file is part of lightblue.
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.redhat.smonkey</groupId>
     <artifactId>smonkey</artifactId>
     <packaging>jar</packaging>
-    <version>0.1-SNAPSHOT</version>
+    <version>1.0</version>
     <dependencies>
       <dependency>
         <groupId>com.fasterxml.jackson.core</groupId>
@@ -44,6 +62,7 @@
                 <artifactId>maven-assembly-plugin</artifactId>
                 <version>2.1</version>
                 <configuration>
+                   <finalName>smonkey</finalName>
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
@@ -59,10 +78,68 @@
                         <id>make-assembly</id>
                         <phase>package</phase>
                         <goals>
-                            <goal>assembly</goal>
+                            <goal>single</goal>
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>rpm-maven-plugin</artifactId>
+                <version>2.1-alpha-2</version>
+                <executions>
+                  <execution>
+                    <goals>
+                       <goal>rpm</goal>
+                    </goals>
+                  </execution>
+                </executions>
+                <configuration>
+                  <copyright>2014, Red Hat, Inc. and/or its affiliates.</copyright>
+                  <name>${project.artifactId}</name>
+                  <release>1</release>
+                  <group>Applications/File</group>
+                  <specfileName>redhat-sd-${project.artifactId}.spec</specfileName>
+                  <defaultDirmode>755</defaultDirmode>
+                  <mappings>
+                     <mapping>
+                       <directory>/usr/share/smonkey-${project.version}</directory>
+                       <filemode>755</filemode>
+                     </mapping>
+                     <mapping>
+                       <directory>/usr/share/smonkey-${project.version}</directory>
+                       <sources>
+                         <source>
+                            <location>target/smonkey-app.jar</location>
+                         </source>
+                       </sources>
+                    </mapping>
+                    <mapping>
+                      <directory>/usr/share/smonkey-${project.version}</directory>
+                        <filemode>755</filemode>
+                        <sources>
+                         <source>
+                          <location>smonkey</location>
+                         </source>
+                         <source>
+                          <location>COPYING</location>
+                         </source>
+                         <source>
+                          <location>README.md</location>
+                         </source>
+                        </sources>
+                    </mapping>
+                    <mapping>
+                      <directory>/usr/bin</directory>
+                        <sources>
+                          <softlinkSource>
+                             <destination>smonkey</destination>
+                             <location>/usr/share/smonkey-${project.version}/smonkey</location>
+                          </softlinkSource>
+                        </sources>
+                   </mapping>
+               </mappings>
+             </configuration>
             </plugin>
          </plugins>
     </build>
