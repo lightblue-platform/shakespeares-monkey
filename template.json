@@ -10,7 +10,7 @@
  "obj1" : { 
      "field1" : "value1",
      "field2" : 2,
-     "stateAbbr" : { "$propfile" : { "file":"adr.properties","choose":"stateAbbreviations" } },
+     "stateAbbr" : { "$propfile" : { "choose":"us.state-abbreviations" } },
      "state" : { "$propfile" : { "file":"adr.properties","choose":"stateNames" } }
   },
  "arr" : [
