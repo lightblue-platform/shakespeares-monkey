@@ -29,6 +29,7 @@ import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 public class RndDate implements Generator {
 
     public static final String DEFAULT_FORMAT="yyyy/MM/dd";
+    public static final SimpleDateFormat DEFAULT_FORMATTER=new SimpleDateFormat(DEFAULT_FORMAT);
 
     @Override
     public String describe() {
@@ -50,8 +51,13 @@ public class RndDate implements Generator {
 
     @Override
     public JsonNode generate(JsonNodeFactory nodeFactory,JsonNode data,Monkey mon) {
-        String format=Utils.asString(data.get("format"),DEFAULT_FORMAT);
-        SimpleDateFormat fmt=new SimpleDateFormat(format);
+        SimpleDateFormat fmt;
+        JsonNode formatNode=data.get("format");
+        if(formatNode==null) {
+            fmt=DEFAULT_FORMATTER;
+        } else {
+            fmt=new SimpleDateFormat(formatNode.asText());
+        }
 
         try {
             String min=Utils.asString(data.get("min"),null);
@@ -79,13 +85,26 @@ public class RndDate implements Generator {
     }
 
     private Date genDate(Date minDate,Date maxDate) {
-        long min=minDate==null?System.currentTimeMillis():minDate.getTime();
-        long max=maxDate==null?System.currentTimeMillis():maxDate.getTime();
+        long now=0;
+        long min,max;
+        if(minDate==null) {
+            min=now=System.currentTimeMillis();
+        } else {
+            min=minDate.getTime();
+        }
+        if(maxDate==null) {
+            if(now==0)
+                now=System.currentTimeMillis();
+            max=now;
+        } else {
+            max=maxDate.getTime();
+        }
         return new Date(Utils.rndl(min,max));
     }
 
+    private static final Calendar cal=Calendar.getInstance();
+
     private Date applyDiff(Date base,String diff,boolean neg) {
-        Calendar cal=Calendar.getInstance();
         cal.setTime(base);
 
         StringBuilder bld=new StringBuilder();
