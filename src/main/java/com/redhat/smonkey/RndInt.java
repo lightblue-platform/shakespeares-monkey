@@ -40,9 +40,6 @@ public class RndInt implements Generator {
         int min=Utils.asInt(data.get("min"),Integer.MIN_VALUE);
         int max=Utils.asInt(data.get("max"),Integer.MAX_VALUE);
         long x=Utils.rndi(min,max);
-        long rng=(long)max-(long)min+1l;
-        x%=rng;
-        x+=(long)min;
         return nodeFactory.numberNode(x);
     }
  }
