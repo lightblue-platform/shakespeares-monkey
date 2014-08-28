@@ -21,25 +21,24 @@ package com.redhat.smonkey;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 
-public class RndLong implements Generator {
+public class RndBool implements Generator {
 
     @Override
     public String describe() {
         return 
-            " { \"$long\": { \"min\": minValue, \"max\": maxValue } }\n"+
-            "    Generate a random long between min/max";
+            " { \"$bool\" }\n"+
+            "    Generate a random boolean true/false";
     }
 
     @Override
     public String getName() {
-        return "$long";
+        return "$bool";
     }
 
     @Override
     public JsonNode generate(JsonNodeFactory nodeFactory,JsonNode data,Monkey mon) {
-        long min=Utils.asLong(data.get("min"),Long.MIN_VALUE);
-        long max=Utils.asLong(data.get("max"),Long.MAX_VALUE);
-        long x=Utils.rndl(min, max);
-        return nodeFactory.numberNode(x);
+        boolean x=Utils.rnd.nextBoolean();
+        return nodeFactory.booleanNode(x);
     }
  }
+ 
