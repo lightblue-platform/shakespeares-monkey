@@ -40,6 +40,7 @@ public class GeneratorRegistry {
             defaultInstance.register(new RndLong());
             defaultInstance.register(new RndArr());
             defaultInstance.register(new Optional());
+            defaultInstance.register(new RndBool());
        }
         return defaultInstance;
     }
