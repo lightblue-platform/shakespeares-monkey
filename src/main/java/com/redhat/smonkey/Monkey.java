@@ -51,8 +51,8 @@ public class Monkey {
         return new Monkey(registry,(ObjectNode)loadJson(file));
     }
 
-    public ObjectNode generate() {
-        return (ObjectNode)generateNode(template);
+    public JsonNode generate() {
+        return generateNode(template);
     }
 
     public static JsonNode json(String s) throws IOException {
