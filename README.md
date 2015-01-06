@@ -79,3 +79,9 @@ To add new generation commands:
 
  * Register an instance of the new class to 
    GeneratorRegistry.getDefaultInstance
+
+
+# License
+
+The license of lightblue is [GPLv3](https://www.gnu.org/licenses/gpl.html).  See LICENSE in root of project for the full text.
+
