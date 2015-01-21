@@ -24,14 +24,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     <packaging>jar</packaging>
     <version>1.2</version>
     <dependencies>
-      <dependency>
-        <groupId>com.fasterxml.jackson.core</groupId>
-        <artifactId>jackson-core</artifactId>
-      </dependency>
-      <dependency>
-        <groupId>com.fasterxml.jackson.core</groupId>
-        <artifactId>jackson-databind</artifactId>
-      </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+        </dependency>
     </dependencies>
     <dependencyManagement>
         <dependencies>
@@ -62,7 +62,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 <artifactId>maven-assembly-plugin</artifactId>
                 <version>2.1</version>
                 <configuration>
-                   <finalName>smonkey</finalName>
+                    <finalName>smonkey</finalName>
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
@@ -88,59 +88,59 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 <artifactId>rpm-maven-plugin</artifactId>
                 <version>2.1-alpha-2</version>
                 <executions>
-                  <execution>
-                    <goals>
-                       <goal>rpm</goal>
-                    </goals>
-                  </execution>
+                    <execution>
+                        <goals>
+                            <goal>rpm</goal>
+                        </goals>
+                    </execution>
                 </executions>
                 <configuration>
-                  <copyright>2014, Red Hat, Inc. and/or its affiliates.</copyright>
-                  <name>${project.artifactId}</name>
-                  <release>1</release>
-                  <group>Applications/File</group>
-                  <specfileName>redhat-sd-${project.artifactId}.spec</specfileName>
-                  <defaultDirmode>755</defaultDirmode>
-                  <mappings>
-                     <mapping>
-                       <directory>/usr/share/smonkey-${project.version}</directory>
-                       <filemode>755</filemode>
-                     </mapping>
-                     <mapping>
-                       <directory>/usr/share/smonkey-${project.version}</directory>
-                       <sources>
-                         <source>
-                            <location>target/smonkey-app.jar</location>
-                         </source>
-                       </sources>
-                    </mapping>
-                    <mapping>
-                      <directory>/usr/share/smonkey-${project.version}</directory>
-                        <filemode>755</filemode>
-                        <sources>
-                         <source>
-                          <location>smonkey</location>
-                         </source>
-                         <source>
-                          <location>COPYING</location>
-                         </source>
-                         <source>
-                          <location>README.md</location>
-                         </source>
-                        </sources>
-                    </mapping>
-                    <mapping>
-                      <directory>/usr/bin</directory>
-                        <sources>
-                          <softlinkSource>
-                             <destination>smonkey</destination>
-                             <location>/usr/share/smonkey-${project.version}/smonkey</location>
-                          </softlinkSource>
-                        </sources>
-                   </mapping>
-               </mappings>
-             </configuration>
+                    <copyright>2014, Red Hat, Inc. and/or its affiliates.</copyright>
+                    <name>${project.artifactId}</name>
+                    <release>1</release>
+                    <group>Applications/File</group>
+                    <specfileName>redhat-sd-${project.artifactId}.spec</specfileName>
+                    <defaultDirmode>755</defaultDirmode>
+                    <mappings>
+                        <mapping>
+                            <directory>/usr/share/smonkey-${project.version}</directory>
+                            <filemode>755</filemode>
+                        </mapping>
+                        <mapping>
+                            <directory>/usr/share/smonkey-${project.version}</directory>
+                            <sources>
+                                <source>
+                                    <location>target/smonkey-app.jar</location>
+                                </source>
+                            </sources>
+                        </mapping>
+                        <mapping>
+                            <directory>/usr/share/smonkey-${project.version}</directory>
+                            <filemode>755</filemode>
+                            <sources>
+                                <source>
+                                    <location>smonkey</location>
+                                </source>
+                                <source>
+                                    <location>LICENSE</location>
+                                </source>
+                                <source>
+                                    <location>README.md</location>
+                                </source>
+                            </sources>
+                        </mapping>
+                        <mapping>
+                            <directory>/usr/bin</directory>
+                            <sources>
+                                <softlinkSource>
+                                    <destination>smonkey</destination>
+                                    <location>/usr/share/smonkey-${project.version}/smonkey</location>
+                                </softlinkSource>
+                            </sources>
+                        </mapping>
+                    </mappings>
+                </configuration>
             </plugin>
-         </plugins>
+        </plugins>
     </build>
 </project>
