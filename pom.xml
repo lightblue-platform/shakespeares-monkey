@@ -47,6 +47,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             </dependency>
         </dependencies>
     </dependencyManagement>
+    <properties>
+        <sourceEncoding>UTF-8</sourceEncoding>
+        <sonar.exclusions>**/*Test.java,**/*Exception.java</sonar.exclusions>
+        <sonar.jdbc.url>jdbc:mysql://127.0.0.1:3306/sonar?useUnicode=true&amp;characterEncoding=utf8&amp;rewriteBatchedStatements=true</sonar.jdbc.url>
+        <sonar.jdbc.username>sonar</sonar.jdbc.username>
+        <sonar.jdbc.password>sonar</sonar.jdbc.password>
+        <sonar.host.url>http://127.0.0.1:8080</sonar.host.url>
+        <sonar.projectName>smoneky</sonar.projectName>
+    </properties>
     <build>
         <plugins>
             <plugin>
@@ -56,6 +65,22 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 <configuration>
                     <source>1.7</source>
                     <target>1.7</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.eluder.coveralls</groupId>
+                <artifactId>coveralls-maven-plugin</artifactId>
+                <version>3.0.1</version>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>cobertura-maven-plugin</artifactId>
+                <version>2.6</version>
+                <configuration>
+                    <format>xml</format>
+                    <maxmem>256m</maxmem>
+                    <!-- aggregated reports for multi-module projects -->
+                    <aggregate>true</aggregate>
                 </configuration>
             </plugin>
             <plugin>
@@ -83,64 +108,73 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>rpm-maven-plugin</artifactId>
-                <version>2.1-alpha-2</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>rpm</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <copyright>2014, Red Hat, Inc. and/or its affiliates.</copyright>
-                    <name>${project.artifactId}</name>
-                    <release>1</release>
-                    <group>Applications/File</group>
-                    <specfileName>redhat-sd-${project.artifactId}.spec</specfileName>
-                    <defaultDirmode>755</defaultDirmode>
-                    <mappings>
-                        <mapping>
-                            <directory>/usr/share/smonkey-${project.version}</directory>
-                            <filemode>755</filemode>
-                        </mapping>
-                        <mapping>
-                            <directory>/usr/share/smonkey-${project.version}</directory>
-                            <sources>
-                                <source>
-                                    <location>target/smonkey-app.jar</location>
-                                </source>
-                            </sources>
-                        </mapping>
-                        <mapping>
-                            <directory>/usr/share/smonkey-${project.version}</directory>
-                            <filemode>755</filemode>
-                            <sources>
-                                <source>
-                                    <location>smonkey</location>
-                                </source>
-                                <source>
-                                    <location>LICENSE</location>
-                                </source>
-                                <source>
-                                    <location>README.md</location>
-                                </source>
-                            </sources>
-                        </mapping>
-                        <mapping>
-                            <directory>/usr/bin</directory>
-                            <sources>
-                                <softlinkSource>
-                                    <destination>smonkey</destination>
-                                    <location>/usr/share/smonkey-${project.version}/smonkey</location>
-                                </softlinkSource>
-                            </sources>
-                        </mapping>
-                    </mappings>
-                </configuration>
-            </plugin>
         </plugins>
     </build>
+    <profiles>
+        <profile>
+            <id>rpm</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>rpm-maven-plugin</artifactId>
+                        <version>2.1-alpha-2</version>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>rpm</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <copyright>2014, Red Hat, Inc. and/or its affiliates.</copyright>
+                            <name>${project.artifactId}</name>
+                            <release>1</release>
+                            <group>Applications/File</group>
+                            <specfileName>redhat-sd-${project.artifactId}.spec</specfileName>
+                            <defaultDirmode>755</defaultDirmode>
+                            <mappings>
+                                <mapping>
+                                    <directory>/usr/share/smonkey-${project.version}</directory>
+                                    <filemode>755</filemode>
+                                </mapping>
+                                <mapping>
+                                    <directory>/usr/share/smonkey-${project.version}</directory>
+                                    <sources>
+                                        <source>
+                                            <location>target/smonkey-app.jar</location>
+                                        </source>
+                                    </sources>
+                                </mapping>
+                                <mapping>
+                                    <directory>/usr/share/smonkey-${project.version}</directory>
+                                    <filemode>755</filemode>
+                                    <sources>
+                                        <source>
+                                            <location>smonkey</location>
+                                        </source>
+                                        <source>
+                                            <location>LICENSE</location>
+                                        </source>
+                                        <source>
+                                            <location>README.md</location>
+                                        </source>
+                                    </sources>
+                                </mapping>
+                                <mapping>
+                                    <directory>/usr/bin</directory>
+                                    <sources>
+                                        <softlinkSource>
+                                            <destination>smonkey</destination>
+                                            <location>/usr/share/smonkey-${project.version}/smonkey</location>
+                                        </softlinkSource>
+                                    </sources>
+                                </mapping>
+                            </mappings>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>
